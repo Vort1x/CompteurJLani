@@ -3,19 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compteur de Jours</title>
+<title>Compteur de célibat</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --primary: #6366f1;
+    --primary: #8b5cf6;
+    --pink: #ec4899;
     --bg: radial-gradient(circle at top, #1e1b4b, #020617);
-    --glass: rgba(255,255,255,0.05);
-    --border: rgba(255,255,255,0.1);
 }
 
-/* RESET */
 * {
     margin:0;
     padding:0;
@@ -28,93 +26,93 @@ body {
     color:white;
     height:100vh;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 }
 
 /* CARD */
 .card {
-    position:relative;
     padding:3rem;
-    border-radius:30px;
-    background: var(--glass);
+    border-radius:28px;
+    background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px);
-    border:1px solid var(--border);
+    border:1px solid rgba(255,255,255,0.1);
     text-align:center;
-    width:90%;
     max-width:420px;
-    box-shadow: 
-        0 20px 60px rgba(0,0,0,0.6),
-        inset 0 0 20px rgba(255,255,255,0.03);
-    transition: transform 0.3s ease;
+    width:90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    transition:0.3s;
 }
 
 .card:hover {
-    transform: translateY(-5px) scale(1.01);
+    transform: translateY(-6px);
 }
 
 /* TITLE */
-h1 {
+.title {
     font-size:0.75rem;
-    letter-spacing:4px;
+    letter-spacing:3px;
     text-transform:uppercase;
     color:#94a3b8;
-    margin-bottom:2rem;
+    margin-bottom:1rem;
+}
+
+/* NAME */
+.name {
+    font-size:1.3rem;
+    font-weight:500;
+    margin-bottom:1.5rem;
 }
 
 /* COUNTER */
-#day-count {
+#count {
     font-size:clamp(4rem, 10vw, 7rem);
     font-weight:800;
-    background: linear-gradient(180deg, #fff, var(--primary));
+    background: linear-gradient(180deg, #fff, var(--pink));
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    display:block;
-    text-shadow: 0 0 20px rgba(99,102,241,0.4);
-    transition: transform 0.2s ease;
+    text-shadow:0 0 25px rgba(236,72,153,0.5);
 }
 
+/* LABEL */
 .label {
     font-size:1.2rem;
-    color:#e2e8f0;
+    margin-top:0.5rem;
     opacity:0.8;
 }
 
+/* MESSAGE */
+.message {
+    margin-top:1.5rem;
+    font-size:0.95rem;
+    color:#cbd5f5;
+    min-height:20px;
+}
+
 /* FOOTER */
-.info-footer {
+.footer {
     margin-top:2rem;
-    padding-top:1.5rem;
-    border-top:1px solid var(--border);
+    padding-top:1rem;
+    border-top:1px solid rgba(255,255,255,0.1);
     font-size:0.8rem;
     color:#64748b;
 }
 
-.date-badge {
-    background: rgba(99,102,241,0.15);
-    padding:4px 12px;
+.badge {
+    background: rgba(236,72,153,0.15);
+    padding:4px 10px;
     border-radius:10px;
-    color:#a5b4fc;
+    color:#f9a8d4;
 }
 
-/* PULSE */
+/* ANIMATION */
 .pulse {
-    animation:pulse 2.5s infinite;
+    animation:pulse 2s infinite;
 }
 
 @keyframes pulse {
     0%,100% { transform:scale(1); }
-    50% { transform:scale(1.05); }
-}
-
-/* GLOW EFFECT */
-.card::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    border-radius:30px;
-    background: radial-gradient(circle at 50% 0%, rgba(99,102,241,0.3), transparent 70%);
-    opacity:0.5;
-    z-index:-1;
+    50% { transform:scale(1.06); }
 }
 </style>
 </head>
@@ -122,63 +120,63 @@ h1 {
 <body>
 
 <div class="card">
-    <h1>Temps écoulé depuis</h1>
+    <div class="title">Compteur officiel</div>
+    <div class="name">💔 Jours de célibat</div>
 
-    <span id="day-count" class="pulse">0</span>
-    <span class="label">jours</span>
+    <div id="count" class="pulse">0</div>
+    <div class="label">jours sans mec</div>
 
-    <div class="info-footer">
-        Depuis le <span class="date-badge">13 mars 2026</span><br>
-        jusqu'au <span id="current-date"></span>
+    <div id="message" class="message"></div>
+
+    <div class="footer">
+        Depuis le <span class="badge">13 mars 2026</span><br>
+        jusqu'au <span id="today"></span>
     </div>
 </div>
 
 <script>
 const startDate = new Date('2026-03-13T00:00:00');
 
-function calculateDays() {
+function getDays() {
     const now = new Date();
-    const diff = now - startDate;
-    return Math.floor(diff / (1000 * 60 * 60 * 24));
+    return Math.floor((now - startDate) / (1000*60*60*24));
 }
 
-function animateValue(end) {
-    const el = document.getElementById('day-count');
-    const duration = 1200;
+function getMessage(days) {
+    if (days < 100) return "Ça vient de commencer 😶";
+    if (days < 150) return "Encore tranquille 😌";
+    if (days < 200) return "Hmm ça commence à faire 🤨";
+    if (days < 365) return "Là faut agir 💀";
+    return "Record en cours 🏆";
+}
+
+function animate(end) {
+    const el = document.getElementById("count");
     let start = 0;
+    const duration = 1200;
     let startTime = null;
 
-    function animate(time) {
+    function frame(time) {
         if (!startTime) startTime = time;
         const progress = Math.min((time - startTime) / duration, 1);
-
-        // easing (plus smooth que linear)
         const ease = 1 - Math.pow(1 - progress, 3);
 
         el.textContent = Math.floor(ease * end);
 
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
+        if (progress < 1) requestAnimationFrame(frame);
     }
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(frame);
 }
 
 function init() {
-    const days = calculateDays();
-    const label = document.querySelector('.label');
+    const days = getDays();
+    animate(days);
 
-    if (days < 0) {
-        document.getElementById('day-count').textContent = "0";
-        label.textContent = "À venir";
-    } else {
-        animateValue(days);
-    }
+    document.getElementById("message").textContent = getMessage(days);
 
-    const now = new Date();
-    document.getElementById('current-date').textContent =
-        now.toLocaleDateString('fr-FR', {
+    document.getElementById("today").textContent =
+        new Date().toLocaleDateString('fr-FR', {
             day:'numeric',
             month:'long',
             year:'numeric'
