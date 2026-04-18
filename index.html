@@ -1,176 +1,192 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compteur de Jours | Design Minimaliste</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compteur de Jours</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            color: white;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+<style>
+:root {
+    --primary: #6366f1;
+    --bg: radial-gradient(circle at top, #1e1b4b, #020617);
+    --glass: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.1);
+}
 
-        /* Container Principal */
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            max-width: 450px;
-            width: 90%;
-            animation: fadeIn 1s ease-out;
-        }
+/* RESET */
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        h1 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #94a3b8;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
+body {
+    font-family:'Inter', sans-serif;
+    background: var(--bg);
+    color:white;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
 
-        /* Affichage du Chiffre */
-        .counter-container {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
+/* CARD */
+.card {
+    position:relative;
+    padding:3rem;
+    border-radius:30px;
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border:1px solid var(--border);
+    text-align:center;
+    width:90%;
+    max-width:420px;
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.6),
+        inset 0 0 20px rgba(255,255,255,0.03);
+    transition: transform 0.3s ease;
+}
 
-        #day-count {
-            font-size: 7rem;
-            font-weight: 800;
-            background: linear-gradient(to bottom, #fff, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            display: block;
-        }
+.card:hover {
+    transform: translateY(-5px) scale(1.01);
+}
 
-        .label {
-            font-size: 1.2rem;
-            color: #e2e8f0;
-            font-weight: 300;
-        }
+/* TITLE */
+h1 {
+    font-size:0.75rem;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#94a3b8;
+    margin-bottom:2rem;
+}
 
-        /* Détails de la période */
-        .info-footer {
-            margin-top: 2.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--glass-border);
-            font-size: 0.85rem;
-            color: #64748b;
-        }
+/* COUNTER */
+#day-count {
+    font-size:clamp(4rem, 10vw, 7rem);
+    font-weight:800;
+    background: linear-gradient(180deg, #fff, var(--primary));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    display:block;
+    text-shadow: 0 0 20px rgba(99,102,241,0.4);
+    transition: transform 0.2s ease;
+}
 
-        .date-badge {
-            background: rgba(99, 102, 241, 0.1);
-            color: #818cf8;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-weight: 500;
-        }
+.label {
+    font-size:1.2rem;
+    color:#e2e8f0;
+    opacity:0.8;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* FOOTER */
+.info-footer {
+    margin-top:2rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--border);
+    font-size:0.8rem;
+    color:#64748b;
+}
 
-        /* Animation subtile de pulsation sur le nombre */
-        .pulse {
-            animation: softPulse 3s infinite ease-in-out;
-        }
+.date-badge {
+    background: rgba(99,102,241,0.15);
+    padding:4px 12px;
+    border-radius:10px;
+    color:#a5b4fc;
+}
 
-        @keyframes softPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-    </style>
+/* PULSE */
+.pulse {
+    animation:pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.05); }
+}
+
+/* GLOW EFFECT */
+.card::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:30px;
+    background: radial-gradient(circle at 50% 0%, rgba(99,102,241,0.3), transparent 70%);
+    opacity:0.5;
+    z-index:-1;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="card">
-        <h1>Temps écoulé depuis</h1>
-        
-        <div class="counter-container">
-            <span id="day-count" class="pulse">0</span>
-            <span class="label">jours</span>
-        </div>
+<div class="card">
+    <h1>Temps écoulé depuis</h1>
 
-        <div class="info-footer">
-            Depuis le <span class="date-badge">13 mars 2026</span> <br>
-            jusqu'à <span id="current-date-text">aujourd'hui</span>
-        </div>
+    <span id="day-count" class="pulse">0</span>
+    <span class="label">jours</span>
+
+    <div class="info-footer">
+        Depuis le <span class="date-badge">13 mars 2026</span><br>
+        jusqu'au <span id="current-date"></span>
     </div>
+</div>
 
-    <script>
-        function updateCounter() {
-            // Date de départ : 13 Mars 2026
-            const startDate = new Date('2026-03-13T00:00:00');
-            const now = new Date();
-            
-            // Calcul de la différence en millisecondes
-            const diffInMs = now - startDate;
-            
-            // Conversion en jours (1 jour = 1000ms * 60s * 60min * 24h)
-            // On utilise Math.floor pour n'avoir que les jours complets
-            const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-            
-            const displayElement = document.getElementById('day-count');
-            
-            // Si la date est dans le futur (diff négative)
-            if (diffInDays < 0) {
-                displayElement.innerText = "0";
-                document.querySelector('.label').innerText = "À venir";
-            } else {
-                // Animation simple du compteur de 0 vers le chiffre final
-                animateNumber(0, diffInDays, 1500);
-            }
+<script>
+const startDate = new Date('2026-03-13T00:00:00');
 
-            // Affichage de la date du jour formatée
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            document.getElementById('current-date-text').innerText = now.toLocaleDateString('fr-FR', options);
+function calculateDays() {
+    const now = new Date();
+    const diff = now - startDate;
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+function animateValue(end) {
+    const el = document.getElementById('day-count');
+    const duration = 1200;
+    let start = 0;
+    let startTime = null;
+
+    function animate(time) {
+        if (!startTime) startTime = time;
+        const progress = Math.min((time - startTime) / duration, 1);
+
+        // easing (plus smooth que linear)
+        const ease = 1 - Math.pow(1 - progress, 3);
+
+        el.textContent = Math.floor(ease * end);
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
         }
+    }
 
-        // Fonction pour animer le chiffre
-        function animateNumber(start, end, duration) {
-            const obj = document.getElementById('day-count');
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerText = Math.floor(progress * (end - start) + start);
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
+    requestAnimationFrame(animate);
+}
 
-        // Initialisation
-        window.onload = updateCounter;
-    </script>
+function init() {
+    const days = calculateDays();
+    const label = document.querySelector('.label');
+
+    if (days < 0) {
+        document.getElementById('day-count').textContent = "0";
+        label.textContent = "À venir";
+    } else {
+        animateValue(days);
+    }
+
+    const now = new Date();
+    document.getElementById('current-date').textContent =
+        now.toLocaleDateString('fr-FR', {
+            day:'numeric',
+            month:'long',
+            year:'numeric'
+        });
+}
+
+init();
+</script>
+
 </body>
 </html>
