@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compteur de célibat</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary: #8b5cf6;
+    --pink: #ec4899;
+    --bg: radial-gradient(circle at top, #1e1b4b, #020617);
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+    font-family:'Inter', sans-serif;
+    background: var(--bg);
+    color:white;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* CARD */
+.card {
+    padding:3rem;
+    border-radius:28px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px);
+    border:1px solid rgba(255,255,255,0.1);
+    text-align:center;
+    max-width:420px;
+    width:90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    transition:0.3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+/* TITLE */
+.title {
+    font-size:0.75rem;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:#94a3b8;
+    margin-bottom:1rem;
+}
+
+/* NAME */
+.name {
+    font-size:1.3rem;
+    font-weight:500;
+    margin-bottom:1.5rem;
+}
+
+/* COUNTER */
+#count {
+    font-size:clamp(4rem, 10vw, 7rem);
+    font-weight:800;
+    background: linear-gradient(180deg, #fff, var(--pink));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 25px rgba(236,72,153,0.5);
+}
+
+/* LABEL */
+.label {
+    font-size:1.2rem;
+    margin-top:0.5rem;
+    opacity:0.8;
+}
+
+/* MESSAGE */
+.message {
+    margin-top:1.5rem;
+    font-size:0.95rem;
+    color:#cbd5f5;
+    min-height:20px;
+}
+
+/* FOOTER */
+.footer {
+    margin-top:2rem;
+    padding-top:1rem;
+    border-top:1px solid rgba(255,255,255,0.1);
+    font-size:0.8rem;
+    color:#64748b;
+}
+
+.badge {
+    background: rgba(236,72,153,0.15);
+    padding:4px 10px;
+    border-radius:10px;
+    color:#f9a8d4;
+}
+
+/* ANIMATION */
+.pulse {
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.06); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="title">Compteur officiel</div>
+    <div class="name">💔 Jours de célibat</div>
+
+    <div id="count" class="pulse">0</div>
+    <div class="label">jours sans mec</div>
+
+    <div id="message" class="message"></div>
+
+    <div class="footer">
+        Depuis le <span class="badge">13 mars 2026</span><br>
+        jusqu'au <span id="today"></span>
+    </div>
+</div>
+
+<script>
+const startDate = new Date('2026-03-13T00:00:00');
+
+function getDays() {
+    const now = new Date();
+    return Math.floor((now - startDate) / (1000*60*60*24));
+}
+
+function getMessage(days) {
+    if (days < 30) return "Ça vient de commencer 😶";
+    if (days < 60) return "Encore tranquille 😌";
+    if (days < 90) return "Hmm ça commence à faire 🤨";
+    if (days < 200) return "Là faut agir 💀";
+    return "Record en cours 🏆";
+}
+
+function animate(end) {
+    const el = document.getElementById("count");
+    let start = 0;
+    const duration = 1200;
+    let startTime = null;
+
+    function frame(time) {
+        if (!startTime) startTime = time;
+        const progress = Math.min((time - startTime) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+
+        el.textContent = Math.floor(ease * end);
+
+        if (progress < 1) requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+}
+
+function init() {
+    const days = getDays();
+    animate(days);
+
+    document.getElementById("message").textContent = getMessage(days);
+
+    document.getElementById("today").textContent =
+        new Date().toLocaleDateString('fr-FR', {
+            day:'numeric',
+            month:'long',
+            year:'numeric'
+        });
+}
+
+init();
+</script>
+
+</body>
+</html>
